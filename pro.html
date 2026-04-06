@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajad Parinda | Galaxy Ultra</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: black;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* 🌌 Canvas */
+#stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+}
+
+/* 🌈 Nebula Effect */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(0,255,255,0.2), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(255,0,255,0.2), transparent 40%);
+    z-index: -2;
+    animation: nebulaMove 10s infinite alternate;
+}
+
+@keyframes nebulaMove {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* Gradient Text */
+h1 {
+    font-size: 50px;
+    background: linear-gradient(45deg, #00f7ff, #00ff88);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Profile Image */
+.profile {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #00f7ff;
+    box-shadow: 0 0 30px #00f7ff;
+    object-fit: cover;
+    margin-bottom: 15px;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 20px #00f7ff; }
+    to { box-shadow: 0 0 50px #00ffcc; }
+}
+
+/* Glass Cards */
+section {
+    margin: 30px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 30px rgba(0,255,255,0.2);
+    transition: 0.3s;
+}
+
+section:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 50px rgba(0,255,255,0.4);
+}
+
+/* Skills */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    margin: 5px 0;
+    background: linear-gradient(90deg, #00f7ff, #00ff88);
+    color: black;
+    border-radius: 10px;
+}
+
+/* Links */
+a {
+    display: block;
+    margin: 8px 0;
+    color: #00f7ff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-shadow: 0 0 10px #00f7ff;
+}
+
+/* Button */
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #00f7ff, #00c3ff);
+    color: black;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00f7ff;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- 🌌 Canvas -->
+<canvas id="stars"></canvas>
+
+<header>
+    <img src="profile.jpg" class="profile">
+    <h1 id="typing"></h1>
+    <p>12th + Diploma in IT 🚀</p>
+</header>
+
+<section>
+    <h2>About Me</h2>
+    <p>I am Ajad Parinda, passionate about web development and aesthetic design.</p>
+</section>
+
+<section>
+    <h2>Skills</h2>
+    <ul>
+        <li>💻 HTML</li>
+        <li>⚡ JavaScript</li>
+        <li>🖥️ C Programming</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Social Media</h2>
+    <a href="https://instagram.com/ajad_parinda_05" target="_blank">📸 Instagram</a>
+    <a href="https://youtube.com/@bhopal_7" target="_blank">▶️ YouTube</a>
+</section>
+
+<section>
+    <h2>Contact</h2>
+    <a href="tel:7489801057">
+        <button>📞 Call Me</button>
+    </a>
+
+    <button onclick="showMsg()">📧 Show Email</button>
+    <p id="msg"></p>
+</section>
+
+<script>
+/* 🌌 Galaxy Stars */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+let shootingStars = [];
+
+/* ⭐ Stars */
+for (let i = 0; i < 200; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5
+    });
+}
+
+/* ☄️ Shooting Stars */
+function createShootingStar() {
+    shootingStars.push({
+        x: Math.random() * canvas.width,
+        y: 0,
+        length: 80,
+        speed: 5,
+        opacity: 1
+    });
+}
+
+setInterval(createShootingStar, 3000);
+
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /* ⭐ Stars */
+    ctx.fillStyle = "white";
+    stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speed;
+        if (star.y > canvas.height) star.y = 0;
+    });
+
+    /* ☄️ Shooting Stars */
+    shootingStars.forEach((s, i) => {
+        ctx.strokeStyle = "white";
+        ctx.globalAlpha = s.opacity;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.length, s.y + s.length);
+        ctx.stroke();
+
+        s.x += s.speed;
+        s.y += s.speed;
+        s.opacity -= 0.02;
+
+        if (s.opacity <= 0) shootingStars.splice(i, 1);
+    });
+
+    ctx.globalAlpha = 1;
+}
+
+function animate() {
+    drawStars();
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+/* ✨ Typing Effect */
+let text = "✨ Ajad Parinda";
+let i = 0;
+
+function typeEffect() {
+    if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeEffect, 100);
+    }
+}
+
+typeEffect();
+
+/* 📧 Email */
+function showMsg() {
+    document.getElementById("msg").innerHTML = "📩 Email: ajadkumar1601@gmail.com";
+}
+</script>
+
+</body>
+</html>
